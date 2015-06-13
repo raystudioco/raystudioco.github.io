@@ -3,7 +3,7 @@ title: RayStudio Photography
 header-img: img/home-bg.jpg
 email: ray@raystudiophoto.com
 description: "A site about photography and few random things."
-baseurl: "/raystudiophoto"
+baseurl: ""
 url: "http://raystudioco.github.io"
 twitter_username: raystudio
 github_username:  raystudioco
