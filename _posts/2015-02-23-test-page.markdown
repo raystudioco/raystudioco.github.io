@@ -1,13 +1,13 @@
 ---
 layout:     post
-title:      "test page 測"
+title:      "test 測"
 subtitle:   "Just for testing."
 date:       2015-02-23 12:00:00
 author:     "Ray Chiang"
 header-img: "img/post-bg-01.jpg"
 ---
 
-<p>This is a test 測試</p>
+<p>This is a test 測試 2222</p>
 
 <p>中文文字測試</p>
 
