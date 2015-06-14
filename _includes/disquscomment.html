@@ -2,8 +2,8 @@
     /* * * CONFIGURATION VARIABLES * * */
     // Required: on line below, replace text in quotes with your forum shortname
     var disqus_shortname = 'raystudiophotography', 
-		disqus_identifier = '{{ page.path | split:'/' | last | cgi_escape }}',
-	    disqus_url = '{{ page.url | uri_escape | prepend: site.baseurl}}';
+		disqus_identifier = '{{ page.path | split:'/' | last | cgi_escape | replace:'.markdown','' }}',
+	    disqus_url = '{{ page.url | uri_escape | prepend: site.baseurl | prepend: site.url}}';
     
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {
