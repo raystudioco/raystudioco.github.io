@@ -1,174 +1,520 @@
-/* css use for extra custom */
+/* Extra custom styles */
 
+/* ── Bootstrap 5 compatibility ───────────────────────────────
+   Polyfills for Bootstrap 3 classes that were removed in v5.  */
 
-.loadingcover {
-
-  position:absolute;
-  left: 0px;
-  top: 0px;
-  width: 100%;
-  height: 100%;
-  z-index: 9999;
-	background: url(icons/loader-1.gif) 50% 50% no-repeat #ffffff;
-  background-size: 50px;      
-
+/* Blog post-preview title links: no underline in any state.
+   Bootstrap 5 sets text-decoration:underline on all <a> by default;
+   clean-blog.css never had underlines on post title links.         */
+.post-preview > a {
+    text-decoration: none;
+}
+.post-preview > a:hover,
+.post-preview > a:focus {
+    text-decoration: none;
 }
 
-
-.preloader {
-
-  max-width: 100%;
-  height: auto;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
-	background: url(icons/loader-1.gif) center center no-repeat;
-    background-size: 30px;
+/* Card header: Bootstrap 5 adds h4 margin-bottom:0.5rem which shifts text
+   toward the top; remove it so the heading is centred within the header.
+   Also suppress Bootstrap 5's global text-decoration:underline on links
+   inside card headers — only show underline on hover.                   */
+.card-header h4 {
+    margin-bottom: 0;
+}
+.card-header a {
+    text-decoration: none;
+}
+.card-header a:hover {
+    text-decoration: underline;
 }
 
-.preloader img{
-	opacity: 0;
+/* .btn-secondary replaces Bootstrap 3's .btn-default.
+   Restore the clean-blog theme style: white bg normally, teal on hover.
+   Uses Bootstrap 5's per-button CSS custom properties so no !important needed. */
+.btn-secondary {
+    --bs-btn-color:              #333333;
+    --bs-btn-bg:                 #ffffff;
+    --bs-btn-border-color:       #cccccc;
+    --bs-btn-hover-color:        #ffffff;
+    --bs-btn-hover-bg:           #0085a1;
+    --bs-btn-hover-border-color: #0085a1;
+    --bs-btn-active-color:       #ffffff;
+    --bs-btn-active-bg:          #006e86;
+    --bs-btn-active-border-color:#006e86;
+    --bs-btn-focus-shadow-rgb:   0, 133, 161;
 }
 
-.nerveSlider1 {
-	/*padding:80px 0;*/
-	text-align:center;
-	margin:0 auto;
-	/*max-width:1200px;*/
-	width:100%;
-	height:100%;
+/* .well was removed in Bootstrap 5; keep it as a custom card-like box */
+.well {
+    padding: 19px;
+    margin-bottom: 20px;
+    background-color: var(--bs-tertiary-bg, #f5f5f5);
+    border: 1px solid var(--bs-border-color, #e3e3e3);
+    border-radius: 4px;
 }
 
-#slideSection {
+/* .page-header was removed in Bootstrap 5 */
+.page-header {
+    padding-bottom: 9px;
+    margin: 40px 0 20px;
+    border-bottom: 1px solid var(--bs-border-color, #eee);
+}
 
-	width:100%;
-	position:relative;
+/* .img-responsive was renamed to .img-fluid in Bootstrap 5 */
+.img-responsive {
+    max-width: 100%;
+    height: auto;
     display: block;
+}
 
+/* Bootstrap 5 navbar uses .navbar-expand-md not .navbar-fixed-top;
+   clean-blog.css references .navbar-custom which is our custom class —
+   override Bootstrap 5's default .navbar padding to match clean-blog.css.
+
+   clean-blog.css targets ".navbar-custom .nav li a" but Bootstrap 5's <ul>
+   no longer carries the .nav class (it uses .navbar-nav only), so those
+   rules are dead. We replicate them here using the correct BS5 selector.  */
+
+/* Typography — all screen sizes */
+.navbar-custom .nav-link {
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+/* Colour + padding — desktop (navbar is transparent over hero image).
+   Also collapses the navbar's own vertical padding so nav-link padding
+   alone controls height (same behaviour as Bootstrap 3 clean-blog theme). */
+@media only screen and (min-width: 768px) {
+    .navbar-custom {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+    .navbar-custom .nav-link {
+        color: white;
+        padding: 20px 15px;
+    }
+    .navbar-custom .nav-link:hover,
+    .navbar-custom .nav-link:focus {
+        color: rgba(255, 255, 255, 0.8);
+    }
+}
+
+/* ── Typography (#22) ────────────────────────────────────────
+   Override clean-blog.css fixed 20px / 1.5 line-height.
+   clamp(16px, calc(1.5vw + 11px), 20px):
+     375px → ~16.6px  |  600px → 20px  |  1024px → 20px (capped)      */
+body {
+    font-size: clamp(16px, calc(1.5vw + 11px), 20px);
+}
+
+p {
+    line-height: 1.75;
+}
+
+h2, h3, h4 {
+    line-height: 1.3;
+}
+
+/* ── Scroll-triggered fade-in (#21) ──────────────────────────
+   Elements with .fade-in start invisible and slide up into
+   view when they enter the viewport (driven by site.js).        */
+.fade-in {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: none;
+}
+
+/* Respect user's reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+    .fade-in {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
+
+/* ── Body padding for fixed navbar ───────────────────────── */
+
+body {
+    padding-top: 50px;
+}
+
+@media only screen and (min-width: 768px) {
+    body {
+        padding-top: 0;
+    }
+}
+
+/* ── Portfolio / Recent Works grid ───────────────────────── */
+
+/* Bootstrap 5 grid requires a flex parent for col-* to work.
+   In Bootstrap 3 the grid was float-based so any container worked.
+   Replicate Bootstrap 5's .row exactly so col-md-4/col-sm-6 children
+   get equal widths, equal gutters, and flush outer edges.              */
+.portfolioPhoto {
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: calc(-1 * var(--bs-gutter-y));
+    margin-right: calc(-.5 * var(--bs-gutter-x));
+    margin-left: calc(-.5 * var(--bs-gutter-x));
+}
+
+/* Bootstrap 5 applies column gutter padding via .row > * not via col-* classes.
+   Mirror that rule so .portfolioPhoto children get the same horizontal padding. */
+.portfolioPhoto > * {
+    flex-shrink: 0;
+    max-width: 100%;
+    padding-right: calc(var(--bs-gutter-x) * .5);
+    padding-left:  calc(var(--bs-gutter-x) * .5);
+    margin-top: var(--bs-gutter-y);
+}
+
+/* Below Bootstrap 5's sm breakpoint (576px) neither col-sm-6 nor col-md-4
+   applies, so items need an explicit full-width to form a single column.
+   Scoped to max-width so it doesn't override col-sm/col-md at larger sizes. */
+@media (max-width: 575.98px) {
+    .portfolioPhoto > * {
+        width: 100%;
+    }
 }
 
 .portfoliorow {
-	padding-bottom: 15px;
+    padding-bottom: 15px;
 }
 
 .img-container {
-  display: block;
-  padding-top: 66%;
-  position: relative;
-  overflow: hidden;
+    display: block;
+    padding-top: 66%;
+    position: relative;
+    overflow: hidden;
 }
 
 .img-portfolio {
-
-  /*max-height: 100%;*/
-  /*min-height:100%;*/
-  /*position: relative;*/
-  max-width: 100%;
-  height: auto;
-  
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;  
-/*  left: 50%;
-  top: 50%;
-  height: 100%;
-  width: auto;
-  -webkit-transform: translate(-50%,-50%);
-      -ms-transform: translate(-50%,-50%);
-          transform: translate(-50%,-50%);  */
-
+    max-width: 100%;
+    height: auto;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
 }
 
 .img-portfolio-div {
-  /*use div and put image in bg url*/
-  /*max-height: 100%;*/
-  /*min-height:100%;*/
-  /*position: relative;*/
-  max-width: 100%;
-  height: auto;
-  
-  /*position: absolute;*/
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;  
-/*  left: 50%;
-  top: 50%;
-  height: 100%;
-  width: auto;
-  -webkit-transform: translate(-50%,-50%);
-      -ms-transform: translate(-50%,-50%);
-          transform: translate(-50%,-50%);  */
-
+    max-width: 100%;
+    height: auto;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
 }
 
-/*for accomdating top bar in small screen.*/
-body{
-	padding-top: 50px;
+/* Spinner shown while recent-works images load */
+.preloader {
+    max-width: 100%;
+    height: auto;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    background: url(icons/loader-1.gif) center center no-repeat;
+    background-size: 30px;
 }
 
-.ns_nerveSlider .ns_nextButton, .ns_nerveSlider .ns_prevButton, .ns_nerveSlider .ns_pauseButton  {
-	display:none;
+.preloader img {
+    opacity: 0;
 }
 
-.headerSection{
-	height: 273px;
-}
-
-@media only screen and (min-width: 768px) {
-	body{
-		padding-top: 0px;
-	}
-
-	.ns_nerveSlider .ns_nextButton, .ns_nerveSlider .ns_prevButton, .ns_nerveSlider .ns_pauseButton {
-		display:block;
-	}
-	
-	.headerSection{
-		height: 456px;
-	}
-}
-
+/* Portfolio category title overlay */
 .portfolio-title {
-	text-align: center;
-	width: 100%;
-	color: white;
-	position: absolute;
-	top: 50%;
-	-webkit-transform: translateY(-50%);
-	-ms-transform: translateY(-50%);
-	transform: translateY(-50%);
+    text-align: center;
+    width: 100%;
+    color: white;
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
 }
 
-/*used in mainpage lay over the slide*/
-.titleoverslide {
-
-  position:absolute;
-  left: 0px;
-  top: 0px;
-  width: 100%;
-  height: 100%;
-  z-index: 9900;
-  pointer-events: none;
-  background: transparent;
+/* Collection container fades in when returning from a set view */
+#collectionContainer {
+    transition: opacity 0.35s ease;
 }
 
-/*
-.intro-header .long-site-name h1 {
-  margin-top: 0;
-  font-size: 32px;
+/* Make the <a> inside .img-container a full-area click target.
+   Without this the anchor collapses to 0 height because its only
+   child (.img-portfolio) is position:absolute and out of flow —
+   so GLightbox / any click handler never fires.                  */
+.img-container > a {
+    display: block;
+    position: absolute;
+    inset: 0;
 }
+
+/* Smooth the .img-hover opacity change (modern-business.css sets
+   opacity:0.8 on hover with no transition — causes a hard flash). */
+.img-hover {
+    transition: opacity 0.25s ease;
+}
+
+/* ── Portfolio Photo Grid (replaces PhotoMosaic) ─────────── */
+
+.photo-grid {
+    columns: 3;
+    column-gap: 12px;
+    margin-bottom: 20px;
+}
+
+.photo-grid a {
+    display: block;
+    break-inside: avoid;
+    margin-bottom: 12px;
+    cursor: pointer;
+    overflow: hidden;   /* clip scale transform so hover zoom stays within bounds */
+}
+
+.photo-grid img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.25s ease;
+}
+
+.photo-grid a:hover img {
+    transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+    .photo-grid { columns: 2; }
+}
+
+@media (max-width: 480px) {
+    .photo-grid { columns: 1; }
+}
+
+/* ── Hero Scroll-Snap Slider ──────────────────────────────── */
+
+#slideSection {
+    position: relative;
+    height: clamp(250px, calc(100vw / 3), 500px);
+    overflow: hidden;
+    margin-bottom: 50px;
+}
+
+/* Scrollable slides container */
+#heroSlider {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;          /* Firefox */
+}
+
+#heroSlider::-webkit-scrollbar {
+    display: none;                  /* Chrome / Safari */
+}
+
+/* Each individual slide */
+.hero-slide {
+    flex: 0 0 100%;
+    height: 100%;
+    scroll-snap-align: start;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Neutralise clean-blog.css's large padding on .site-heading inside the hero.
+   clean-blog.css sets padding: 100px 0 50px (< 768px) and padding: 150px 0 (>= 768px).
+   In a 250-500px tall slider those values overflow the container and shift the title.
+   With padding: 0, flexbox centres the title text block correctly at all sizes. */
+.hero-overlay.intro-header .site-heading {
+    padding: 0;
+}
+
+/* Semi-transparent overlay carrying the site title.
+   Inherits .intro-header text styles from clean-blog.css;
+   the double-class selector overrides intro-header's background. */
+.hero-overlay.intro-header {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.38);
+    margin-bottom: 0;
+    pointer-events: none;           /* touches pass through to slider */
+}
+
+/* Dot navigation */
+#heroDots {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.hero-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.45);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.3s ease;
+}
+
+.hero-dot.active {
+    background: #fff;
+}
+
+.hero-dot:hover {
+    background: rgba(255, 255, 255, 0.8);
+}
+
+/* ── GLightbox description text ──────────────────────────────
+   GLightbox default .gslide-desc is #a1a1a1 on a white panel —
+   contrast ratio ~2.8:1, below readable threshold.             */
+.gslide-desc {
+    color: #444444;
+}
+
+/* ── Theme toggle button ──────────────────────────────────── */
+#theme-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;         /* match .navbar-custom .nav-link font-size   */
+    padding: 0.5rem 0;       /* match Bootstrap 5 nav-link: padding-x = 0  */
+    line-height: 1.5;
+    color: #777;
+    display: block;          /* full-width block at mobile, like nav <a>   */
+    width: 100%;
+    text-align: left;
+    transition: color 0.2s, opacity 0.2s;
+}
+#theme-toggle:hover { opacity: 0.75; }
 
 @media only screen and (min-width: 768px) {
-  .intro-header .long-site-name h1{
-    font-size: 54px;
-  }
-}*/
+    /* Desktop: match clean-blog.css nav link padding and centre the icon */
+    #theme-toggle {
+        color: white;
+        padding: 20px 15px;
+        display: inline-block;
+        width: auto;
+        text-align: center;
+    }
+}
 
+/* ── Dark mode (#20) ──────────────────────────────────────────
+   Two mechanisms work together:
+   • data-bs-theme="dark" on <html> → Bootstrap 5.3 handles cards, buttons,
+     forms, tables, links automatically via its CSS custom-property system.
+   • html.dark-mode class → our overrides for custom / non-Bootstrap elements
+     (navbar, pager, footer, hero, GLightbox, contact overlay).
+   Both are set simultaneously by site.js + the flash-prevention script.     */
 
+html.dark-mode {
+    --dm-text:       #e0e0e0;
+    --dm-text-muted: #909090;
+    --dm-border:     #333333;
+    --dm-link:       #2ab8d0;
+}
+
+/* Body: override Bootstrap 5's default dark bg (#212529) with deeper black */
+html.dark-mode body {
+    background-color: #111111;
+    color: var(--dm-text);
+}
+
+/* Keep site brand teal for links instead of Bootstrap 5's default blue */
+html.dark-mode a            { color: var(--dm-link); }
+html.dark-mode a:hover,
+html.dark-mode a:focus      { color: var(--dm-link); }
+html.dark-mode .text-muted  { color: var(--dm-text-muted); }
+
+/* Custom classes removed in Bootstrap 5 */
+html.dark-mode .page-header { border-color: var(--dm-border); }
+html.dark-mode .well        { background-color: #1c1c1c; border-color: var(--dm-border); }
+
+/* Navbar: .navbar-custom is our class — Bootstrap 5 data-bs-theme doesn't cover it */
+html.dark-mode .navbar-custom {
+    background-color: #1c1c1c;
+    border-bottom-color: var(--dm-border);
+}
+html.dark-mode .navbar-custom.is-fixed {
+    background-color: rgba(18, 18, 18, 0.93) !important;
+    border-bottom-color: var(--dm-border);
+}
+html.dark-mode .navbar-custom .navbar-brand,
+html.dark-mode .navbar-custom .nav-link {
+    color: var(--dm-text) !important;
+}
+html.dark-mode .navbar-custom .navbar-brand:hover,
+html.dark-mode .navbar-custom .navbar-brand:focus,
+html.dark-mode .navbar-custom .nav-link:hover,
+html.dark-mode .navbar-custom .nav-link:focus {
+    color: var(--dm-link) !important;
+}
+html.dark-mode #theme-toggle { color: var(--dm-text); }
+
+/* Pager: removed in Bootstrap 5, styled entirely by clean-blog.css */
+html.dark-mode .pager li > a,
+html.dark-mode .pager li > span {
+    background-color: #1c1c1c;
+    border-color: var(--dm-border);
+    color: var(--dm-text);
+}
+html.dark-mode .pager li > a:hover,
+html.dark-mode .pager li > a:focus {
+    background-color: #2a2a2a;
+    color: var(--dm-text);
+}
+
+/* Floating label in contact form (custom class) */
+html.dark-mode .floating-label-form-group label { color: var(--dm-text-muted); }
+
+/* Blog post previews (custom clean-blog.css classes) */
+html.dark-mode .post-preview > a                { color: var(--dm-text); }
+html.dark-mode .post-preview > a:hover,
+html.dark-mode .post-preview > a:focus          { color: var(--dm-link); }
+html.dark-mode .post-preview .post-subtitle,
+html.dark-mode .post-preview .post-meta         { color: var(--dm-text-muted); }
+
+/* Footer */
+html.dark-mode footer         { color: var(--dm-text-muted); }
+html.dark-mode footer a       { color: var(--dm-text-muted); }
+html.dark-mode footer a:hover { color: var(--dm-text); }
+
+/* GLightbox panel */
+html.dark-mode .gslide-description { background: #1e1e1e; }
+html.dark-mode .gslide-title       { color: #e0e0e0; }
+html.dark-mode .gslide-desc        { color: #aaaaaa; }
+
+/* Contact confirmation overlay */
+html.dark-mode #contactOverlay        { background: rgba(17, 17, 17, 0.97); }
+html.dark-mode #contactOverlayTitle   { color: var(--dm-text); }
+html.dark-mode #contactOverlayMessage { color: var(--dm-text-muted); }
+
+/* Hero slider overlay */
+html.dark-mode .hero-overlay.intro-header { background: rgba(0, 0, 0, 0.50); }

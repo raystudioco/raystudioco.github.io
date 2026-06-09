@@ -2,39 +2,34 @@
 layout: custompage
 title: "RayStudio"
 description: "A site for photography and few random things"
-custom_js: 
-- resources/jquery-ui-1.10.2.min
-- jquery.nerveSlider.min
-- tools.flickr.min
-- baguetteBox.min
+custom_js:
+- glightbox.min
 - mainpage
-custom_css: 
+custom_css:
 - modern-business
-- nerveSlider.min
+- glightbox.min
 - extracustom
-- baguetteBox.min
 ---    
-    <!-- Header nerveslider-->
-    <header id="slideSection" class="headerSection" >
-		<div id="sliderCover" class="loadingcover"></div>
-		<div class="titleoverslide intro-header">
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-						<div class="site-heading long-site-name">
-							<h1>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</h1>
-							<hr class="small">
-							<span class="subheading">{{ page.description }}</span>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-        <div class="nerveSlider1">
-            <div class="slider1">
-				<img src="https://farm7.staticflickr.com/6007/5924952627_99b3fe96db_o.jpg" alt="IMG_5527_selectCrop" data-slidecaption="<h1>Raystudio Photography</h1> A site about Photography Travel and Coffee" style="width:100%;">		
+    <!-- Hero scroll-snap slider -->
+    <header id="slideSection">
+        <!-- Slides injected by mainpage.js -->
+        <div id="heroSlider" aria-label="Photography showcase"></div>
+        <!-- Text overlay — reuses intro-header typography from clean-blog.css -->
+        <div class="hero-overlay intro-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+                        <div class="site-heading long-site-name">
+                            <h1>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</h1>
+                            <hr class="small">
+                            <span class="subheading">{{ page.description }}</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+        <!-- Dot navigation injected by mainpage.js -->
+        <nav id="heroDots" aria-label="Slide navigation"></nav>
     </header>
 
 
@@ -49,37 +44,37 @@ custom_css:
                 </h2>
             </div>
 			{% for post in site.posts limit:3 %}
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <a href="{{ post.url | prepend: site.baseurl }}"><h4><i class="fa fa-fw fa-check"></i> {{ post.title | truncatewords:8 }} </h4></a>
+            <div class="col-md-4 fade-in">
+                <div class="card">
+                    <div class="card-header">
+                        <a href="{{ post.url | prepend: site.baseurl }}"><h4><i class="fa-solid fa-fw fa-check"></i> {{ post.title | truncatewords:8 }} </h4></a>
                     </div>
-                    <div class="panel-body">
+                    <div class="card-body">
                         <p>{{ post.content | strip_html | truncatewords:35}}</p>
-                        <a href="{{ post.url | prepend: site.baseurl }}" class="btn btn-default">Read More...</a>
+                        <a href="{{ post.url | prepend: site.baseurl }}" class="btn btn-secondary">Read More...</a>
                     </div>
                 </div>
             </div>
 			{% endfor %}
             <!--<div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4><i class="fa fa-fw fa-gift"></i> Free &amp; Open Source</h4>
+                <div class="card">
+                    <div class="card-header">
+                        <h4><i class="fa-solid fa-fw fa-gift"></i> Free &amp; Open Source</h4>
                     </div>
-                    <div class="panel-body">
+                    <div class="card-body">
                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque, optio corporis quae nulla aspernatur in alias at numquam rerum ea excepturi expedita tenetur assumenda voluptatibus eveniet incidunt dicta nostrum quod?</p>
-                        <a href="#" class="btn btn-default">Learn More</a>
+                        <a href="#" class="btn btn-secondary">Learn More</a>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4><i class="fa fa-fw fa-compass"></i> Easy to Use</h4>
+                <div class="card">
+                    <div class="card-header">
+                        <h4><i class="fa-solid fa-fw fa-compass"></i> Easy to Use</h4>
                     </div>
-                    <div class="panel-body">
+                    <div class="card-body">
                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque, optio corporis quae nulla aspernatur in alias at numquam rerum ea excepturi expedita tenetur assumenda voluptatibus eveniet incidunt dicta nostrum quod?</p>
-                        <a href="#" class="btn btn-default">Learn More</a>
+                        <a href="#" class="btn btn-secondary">Learn More</a>
                     </div>
                 </div>
             </div>-->
@@ -87,7 +82,7 @@ custom_css:
         <!-- /.row -->
 
         <!-- Portfolio Section -->
-        <div class="row">
+        <div class="row fade-in">
             <div class="col-lg-12">
                 <h2 class="page-header">Recent works</h2>
             </div>
@@ -145,14 +140,14 @@ custom_css:
                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestias, expedita, saepe, vero rerum deleniti beatae veniam harum neque nemo praesentium cum alias asperiores commodi.</p>
                 </div-->
                 <div class="col-md-4">
-                    <a class="btn btn-lg btn-default btn-block" href="http://www.flickr.com/photos/raystudio">See more at flickr</a>
+                    <a class="btn btn-lg btn-secondary w-100" href="http://www.flickr.com/photos/raystudio">See more at flickr</a>
                 </div>
             </div>
         </div>		
 		
 		
         <!-- Features Section -->
-        <div class="row">
+        <div class="row fade-in">
             <div class="col-lg-12">
                 <h2 class="page-header">About</h2>
             </div>
@@ -162,8 +157,11 @@ custom_css:
             </div>
             <div class="col-md-6">
                 <!--img class="img-responsive" src="http://placehold.it/700x450" alt=""-->
-				<div class = "img-container">
-					<img class="img-responsive img-portfolio" src="https://farm8.staticflickr.com/7226/6864275466_f42e6c4114_z.jpg" alt="">
+				<div class="img-container">
+					<picture>
+						<source srcset="/img/about-photo.webp" type="image/webp">
+						<img class="img-responsive img-portfolio" src="/img/about-photo.jpg" alt="RayStudio Photography">
+					</picture>
 				</div>
             </div>
         </div>
@@ -178,7 +176,7 @@ custom_css:
                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestias, expedita, saepe, vero rerum deleniti beatae veniam harum neque nemo praesentium cum alias asperiores commodi.</p>
                 </div>
                 <div class="col-md-4">
-                    <a class="btn btn-lg btn-default btn-block" href="#">Call to Action</a>
+                    <a class="btn btn-lg btn-secondary w-100" href="#">Call to Action</a>
                 </div>
             </div>
         </div>

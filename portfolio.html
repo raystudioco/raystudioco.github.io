@@ -2,17 +2,12 @@
 layout: custompage
 title: "Portfolio"
 description: "Raystudio Photography"
-custom_js: 
-- tools.flickr.min
-- baguetteBox.min
-- photomosaic/jquery-1.9.1.min
-- photomosaic/jstween-1.1
-- photomosaic/jquery.photoMosaic
+custom_js:
+- glightbox.min
 - portfoliopage
 custom_css:
 - modern-business
-- baguetteBox.min
-- photoMosaic
+- glightbox.min
 - extracustom
 header-img: "img/siteBg_07_irvine_fall_backbay.jpg"
 ---    
@@ -30,7 +25,7 @@ header-img: "img/siteBg_07_irvine_fall_backbay.jpg"
 <header class="intro-header" style="background-image: url('{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}')">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
                 <div class="site-heading">
                     <h1>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</h1>
                     <hr class="small">
@@ -47,7 +42,7 @@ header-img: "img/siteBg_07_irvine_fall_backbay.jpg"
 
         <div class="row">
 	
-						<div class='setPortfolio-parent'>
+						<div class='setPortfolio-parent col-12'>
 							<div class='setHeader'>
 								<div id="setPrimaryPhoto"></div>
 								<div id="setDescription"></div>
